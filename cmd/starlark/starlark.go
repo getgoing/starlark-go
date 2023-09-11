@@ -22,6 +22,7 @@ import (
 	"go.starlark.net/repl"
 	"go.starlark.net/resolve"
 	"go.starlark.net/starlark"
+	"go.starlark.net/starlarkstruct"
 	"golang.org/x/term"
 )
 
@@ -91,7 +92,9 @@ func doMain() int {
 	}
 
 	thread := &starlark.Thread{Load: repl.MakeLoad()}
-	globals := make(starlark.StringDict)
+	globals := starlark.StringDict{
+		"struct": starlark.NewBuiltin("struct", starlarkstruct.Make),
+	}
 
 	// Ideally this statement would update the predeclared environment.
 	// TODO(adonovan): plumb predeclared env through to the REPL.
